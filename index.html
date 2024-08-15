@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device=width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding-top:130px;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            flex: 1 1 45%;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .form-group input, .form-group select {
+            flex: 1 1 45%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        .form-group input[type="date"] {
+            padding: 7px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-actions input[type="submit"], .form-actions input[type="reset"] {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-actions input[type="reset"] {
+            background-color: #dc3545;
+        }
+
+        .form-actions input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .form-actions input[type="reset"]:hover {
+            background-color: #c82333;
+        }
+
+        /* Popup Styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #28a745;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .popup h2 {
+            margin: 0;
+        }
+
+        /* Overlay for Popup */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 480px) {
+            .form-group {
+                flex-direction: column;
+            }
+
+            .form-group label, .form-group input, .form-group select {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Form Container -->
+    <div class="container">
+        <h1>Registration</h1>
+        <form id="registration-form">
+            <div class="form-group">
+                <label for="student-name">Student Name</label>
+                <input type="text" id="student-name" name="student_name" placeholder="Type student name here" required>
+            </div>
+            <div class="form-group">
+                <label for="father-name">Father's Name</label>
+                <input type="text" id="father-name" name="fathers_name" placeholder="Type father's name here" required>
+                <label for="mother-name">Mother's Name</label>
+                <input type="text" id="mother-name" name="mothers_name" placeholder="Type mother's name here" required>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth (DOB)</label>
+                <input type="date" id="dob" name="dob" required>
+                <label for="class">Class</label>
+                <select id="class" name="class" required>
+                    <option value="" disabled selected>Select your class</option>
+                    <option value="9th">9th 🎓</option>
+                    <option value="10th">10th 🎓</option>
+                    <option value="11th">11th 🎓</option>
+                    <option value="12th">12th 🎓</option>
+                    <option value="Graduation">Graduation 🎓</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="email">Email ID</label>
+                <input type="email" id="email" name="email" placeholder="Type email here" required>
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" placeholder="Type address here" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="Type phone number here" pattern="[0-9]{10}" required>
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender" required>
+                    <option value="" disabled selected>Select gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <input type="submit" value="Submit">
+                <input type="reset" value="Clear All">
+            </div>
+        </form>
+    </div>
+
+    <!-- Popup and Overlay -->
+    <div class="overlay"></div>
+    <div class="popup">
+        <h2>Your Details Submitted Successfully!</h2>
+    </div>
+
+    <script>
+        // Form Validation and Submission
+        document.getElementById('registration-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form from submitting the traditional way
+
+            // Example of validation (you can add more checks here)
+            const studentName = document.getElementById('student-name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+
+            if (studentName === '' || email === '' || phone === '' || !phone.match(/^\d{10}$/)) {
+                alert('Please fill out all fields correctly.');
+                return;
+            }
+
+            // Show Popup
+            document.querySelector('.overlay').style.display = 'block';
+            document.querySelector('.popup').style.display = 'block';
+
+            // Hide Popup after 3 seconds
+            setTimeout(function() {
+                document.querySelector('.overlay').style.display = 'none';
+                document.querySelector('.popup').style.display = 'none';
+            }, 3000);
+
+            // Optionally, you could submit the form data via AJAX here
+
+            // Clear the form
+            document.getElementById('registration-form').reset();
+        });
+    </script>
+
+</body>
+</html>
